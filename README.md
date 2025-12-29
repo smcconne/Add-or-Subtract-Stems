@@ -2,7 +2,7 @@
 
 A desktop application for combining and subtracting audio stems. Built with Python and PyQt5.
 
-![Cross-platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
+[![Cross-platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)](https://github.com/smcconne/Add-or-Subtract-Stems/releases)
 
 ## What it does
 
@@ -49,8 +49,8 @@ Download the latest release for your platform from the [Releases](../../releases
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/add-or-subtract-stems.git
-   cd add-or-subtract-stems
+   git clone https://github.com/smcconne/Add-or-Subtract-Stems.git
+   cd Add-or-Subtract-Stems
    ```
 
 2. Install dependencies:
