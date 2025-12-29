@@ -2,6 +2,8 @@
 
 A desktop application for combining and subtracting audio stems. Built with Python and PyQt5.
 
+![Screenshot](screenshot.png)
+
 [![Cross-platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)](https://github.com/smcconne/Add-or-Subtract-Stems/releases)
 
 ## What it does
