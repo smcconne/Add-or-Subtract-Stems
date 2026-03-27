@@ -503,19 +503,7 @@ class MainWindow(QtWidgets.QWidget):
                     f"The combined audio would clip (peak: {peak:.2f}).\n\n"
                     f"Would you like to lower the volume to prevent clipping?"
                 )
-                # Apply theme colors to message box
                 theme_key = self.settings.value("theme", None, type=str)
-                if theme_key and theme_key in THEMES:
-                    theme = THEMES[theme_key]
-                    msg_box.setStyleSheet(f"""
-                        QMessageBox {{
-                            background-color: {theme.get('surface', '#ffffff')};
-                            color: {theme.get('text', '#000000')};
-                        }}
-                        QMessageBox QLabel {{
-                            color: {theme.get('text', '#000000')};
-                        }}
-                    """)
                 yes_btn = msg_box.addButton(f"Yes, lower {reduction_db_str}db", QtWidgets.QMessageBox.AcceptRole)
                 no_btn = msg_box.addButton("No, let it clip", QtWidgets.QMessageBox.ActionRole)
                 # Add a hidden cancel button for X/Esc handling

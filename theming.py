@@ -286,5 +286,24 @@ def apply_theme(app, name):
         width: 0px;
         height: 0px;
     }}
+
+    QMessageBox {{
+        background-color: {surface};
+        color: {fg_global};
+    }}
+    QMessageBox QLabel {{
+        color: {fg_global};
+    }}
+    QMessageBox QPushButton {{
+        background-color: {btn};
+        color: {btn_text};
+        border: 1px solid {border};
+        border-radius: 6px;
+        padding: 6px 12px;
+    }}
+    QMessageBox QPushButton:hover {{
+        background-color: {btn_hover};
+        color: {btn_text};
+    }}
     """
     app.setStyleSheet(style)
