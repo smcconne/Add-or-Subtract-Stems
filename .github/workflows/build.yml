@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pyinstaller PyQt5 numpy soundfile
+          pip install pyinstaller PyQt5 numpy soundfile pydub
 
       - name: Build with PyInstaller
         run: pyinstaller "Add or Subtract Stems.spec" --noconfirm
@@ -52,7 +52,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pyinstaller PyQt5 numpy soundfile
+          pip install pyinstaller PyQt5 numpy soundfile pydub
 
       - name: Convert PNG to ICNS
         run: |
@@ -100,7 +100,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pyinstaller PyQt5 numpy soundfile
+          pip install pyinstaller PyQt5 numpy soundfile pydub
 
       - name: Build with PyInstaller
         run: pyinstaller "Add or Subtract Stems_linux.spec" --noconfirm
