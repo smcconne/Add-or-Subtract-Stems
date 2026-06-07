@@ -32,6 +32,16 @@ def _contrast_ratio(hex1, hex2):
     return (lighter + 0.05) / (darker + 0.05)
 
 
+def _hex_to_rgba_css(hex_color, alpha):
+    """Convert #RRGGBB to a Qt stylesheet rgba(...) string."""
+    r, g, b = _hex_to_rgb1(hex_color)
+    r = int(round(r * 255))
+    g = int(round(g * 255))
+    b = int(round(b * 255))
+    a = max(0.0, min(1.0, float(alpha)))
+    return f"rgba({r}, {g}, {b}, {a:.3f})"
+
+
 def best_text_on(bg_hex, prefer_hex=None, target=4.5):
     """Return the best text color for a given background color."""
     if prefer_hex and _contrast_ratio(bg_hex, prefer_hex) >= target:
@@ -78,6 +88,21 @@ def make_paintbrush_icon(theme_key):
     stroke = THEMES[theme_key]["submit"]
     svg = LUCIDE_BRUSH_SVG.format(STROKE=stroke)
     return _svg_icon_from_string(svg, size_px=26)
+
+
+def get_status_text_css(theme_key):
+    """Return the computed status-label color as a CSS rgba(...) value."""
+    if theme_key not in THEMES:
+        theme_key = next(iter(THEMES.keys()))
+
+    base = THEMES[theme_key]
+    bg = base["bg"]
+    active_tab = base["active_tab"]
+    text_color = base["text"]
+
+    fg_global = _best_text_on(bg, text_color)
+    panel_text = _best_text_on(active_tab, fg_global)
+    return _hex_to_rgba_css(panel_text, 0.80)
 
 
 def apply_theme(app, name):
@@ -133,6 +158,8 @@ def apply_theme(app, name):
     drop_text       = _best_text_on(drop_bg, fg_global)
     submit_text     = _best_text_on(submit, fg_global)
     active_opt_text = _best_text_on(active_option, fg_global)
+    minus_text      = _hex_to_rgba_css(panel_text, 0.67)
+    status_text     = _hex_to_rgba_css(panel_text, 0.80)
 
     pal = QtGui.QPalette()
     pal.setColor(QtGui.QPalette.Window,          QtGui.QColor(bg))
@@ -163,6 +190,8 @@ def apply_theme(app, name):
     QTabBar {{
         background: {surface};
         color: {tab_text};
+        border: none;
+        border-bottom: 1px solid {border};
     }}
     QTabBar::tab {{
         background: {tab_bg};
@@ -173,6 +202,9 @@ def apply_theme(app, name):
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
         margin-right: 2px;
+    }}
+    QTabBar::tab:!selected {{
+        border-bottom: 1px solid {border};
     }}
     QTabBar::tab:hover {{
         background: {tab_hover};
@@ -185,6 +217,7 @@ def apply_theme(app, name):
         border-bottom: none;
         margin-bottom: -1px;
         margin-left: 0px;
+        margin-right: 2px;
     }}
 
     QTabWidget::pane {{
@@ -225,11 +258,11 @@ def apply_theme(app, name):
     }}
 
     QLabel#minus {{
-        color: {panel_text}AA;
+        color: {minus_text};
         font-weight: bold;
     }}
     QLabel#status {{
-        color: {panel_text}CC;
+        color: {status_text};
     }}
 
     QPushButton {{

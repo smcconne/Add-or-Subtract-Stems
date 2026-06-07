@@ -56,12 +56,26 @@ Download the latest release for your platform from the [Releases](../../releases
    cd Add-or-Subtract-Stems
    ```
 
-2. Install dependencies:
-   ```bash
-   pip install PyQt5 numpy soundfile
+2. Create and activate a virtual environment (recommended, keeps the project's packages isolated from your global Python install):
+
+   **Windows (PowerShell):**
+   ```powershell
+   python -m venv .venv
+   .\.venv\Scripts\Activate.ps1
    ```
 
-3. Run the application:
+   **macOS / Linux:**
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   ```
+
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Run the application:
    ```bash
    python "Add or Subtract Stems.py"
    ```

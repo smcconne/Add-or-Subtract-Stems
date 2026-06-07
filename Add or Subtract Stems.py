@@ -8,10 +8,10 @@
 #   Copy-Item "dist\Add or Subtract Stems.exe" -Destination "$env:USERPROFILE\OneDrive\Desktop\Add or Subtract Stems.exe" -Force
 
 import sys
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets, QtCore, QtGui
 from theming import apply_theme
 from themes_data import THEMES
-from main_window import MainWindow
+from main_window import MainWindow, get_resource_path
 
 ORG_NAME = "MinusStems"
 APP_NAME = "MinusStemsGUI"
@@ -19,7 +19,21 @@ DEFAULT_THEME = "desert_hc"
 
 
 def main():
+    if sys.platform == "win32":
+        try:
+            import ctypes
+            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(
+                "MinusStems.AddOrSubtractStems"
+            )
+        except Exception:
+            pass
+
     app = QtWidgets.QApplication(sys.argv)
+
+    # Set application icon so all app windows inherit it.
+    icon_path = get_resource_path("icon.png")
+    if QtCore.QFile.exists(icon_path):
+        app.setWindowIcon(QtGui.QIcon(icon_path))
 
     settings = QtCore.QSettings(ORG_NAME, APP_NAME)
     saved_theme = settings.value("theme", DEFAULT_THEME, type=str)

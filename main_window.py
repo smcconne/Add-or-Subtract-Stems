@@ -54,7 +54,8 @@ class MainWindow(QtWidgets.QWidget):
         self.lower_volume_tab = self._build_lower_volume_tab()
         self.subtract_stems_tab = self._build_subtract_stems_tab()
         self.tabs.addTab(self.lower_volume_tab, "Add Stems")
-        self.tabs.addTab(self.subtract_stems_tab, "Subtract stems")
+        self.tabs.addTab(self.subtract_stems_tab, "Subtract Stems")
+        self.tabs.currentChanged.connect(self._set_default_status_for_current_tab)
 
         inner_v.addWidget(self.tabs)
 
@@ -66,20 +67,15 @@ class MainWindow(QtWidgets.QWidget):
         outer.addWidget(self.inner)
 
         self._install_theme_corner()
+        self._set_default_status_for_current_tab()
 
-        # Show attribution on startup
-        self._show_attribution()
-
-    def _show_attribution(self):
-        """Show icon attribution with proper theme color."""
-        theme_key = self.settings.value("theme", next(iter(THEMES.keys())), type=str)
-        if theme_key in THEMES:
-            text_color = THEMES[theme_key].get("text", "#888888")
-        else:
-            text_color = "#888888"
-        self.status_label.setText(
-            f'<a href="https://www.flaticon.com/authors/pop-vectors" style="color: {text_color};">App icon by Pop Vectors</a>'
-        )
+    def _set_default_status_for_current_tab(self):
+        """Show the default status message for the active tab."""
+        current = self.tabs.currentWidget()
+        if current is self.lower_volume_tab:
+            self.set_status("Add Stems: sum or convert audio")
+        elif current is self.subtract_stems_tab:
+            self.set_status("Subtract Stems: invert, then sum audio")
 
     # ---------- Theme corner ----------
 
@@ -216,6 +212,7 @@ class MainWindow(QtWidgets.QWidget):
         app = QtWidgets.QApplication.instance()
         apply_theme(app, theme_key)
         self.settings.setValue("theme", theme_key)
+        self._set_default_status_for_current_tab()
         self._theme_button.setIcon(self._make_paintbrush_icon())
         self._reposition_theme_button_window()
 
@@ -356,7 +353,7 @@ class MainWindow(QtWidgets.QWidget):
         controls_v.addStretch(1)
 
         # Header as overlay, positioned above the button row
-        self.lv_hdr = QtWidgets.QLabel("Lower volume then sum:", self.lv_controls_container)
+        self.lv_hdr = QtWidgets.QLabel("Lower volume (before sum):", self.lv_controls_container)
         self.lv_hdr.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.lv_hdr.setObjectName("sectionhdr")
         self.lv_hdr.adjustSize()
@@ -563,7 +560,7 @@ class MainWindow(QtWidgets.QWidget):
 
             self.set_status(f"Saved: {os.path.basename(out_path)}")
 
-    # ---------- Subtract stems tab ----------
+    # ---------- Subtract Stems tab ----------
 
     def _build_subtract_stems_tab(self):
         tab = QtWidgets.QWidget()
@@ -596,7 +593,7 @@ class MainWindow(QtWidgets.QWidget):
         buttons_layout = QtWidgets.QHBoxLayout()
         buttons_layout.setContentsMargins(0, 8, 0, 0)
         self.ss_clear_button = QtWidgets.QPushButton("Clear")
-        self.ss_run_button = QtWidgets.QPushButton("Subtract stems")
+        self.ss_run_button = QtWidgets.QPushButton("Subtract Stems")
         self.ss_run_button.setObjectName("primary")
 
         self.ss_clear_button.setFixedWidth(80)
