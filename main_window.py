@@ -4,6 +4,7 @@
 
 import os
 import sys
+import importlib
 import numpy as np
 from PyQt5 import QtWidgets, QtCore, QtGui
 
@@ -67,6 +68,7 @@ class MainWindow(QtWidgets.QWidget):
         outer.addWidget(self.inner)
 
         self._install_theme_corner()
+        self._install_theme_live_reload()
         self._set_default_status_for_current_tab()
 
     def _set_default_status_for_current_tab(self):
@@ -83,15 +85,23 @@ class MainWindow(QtWidgets.QWidget):
     # Hue ranges are 0-360; neutral is for low saturation colors
     RAINBOW_CATEGORIES = [
         ("Neutral", "#888888"),  # Low saturation
-        ("Red", "#E41A1C"),       # 0-15, 345-360
+        ("Grey", "#6B7280"),      # Manual bucket for selected neutral themes
+        ("Red", "#E41A1C"),       # 0-15, 320-360
         ("Orange", "#E0A458"),    # 15-45
         ("Yellow", "#D7A900"),    # 45-70
         ("Green", "#10B981"),     # 70-165
-        ("Cyan", "#00B5C8"),      # 165-200
-        ("Blue", "#268BD2"),      # 200-260
-        ("Purple", "#A78BFA"),    # 260-290
-        ("Pink", "#E7298A"),      # 290-345
+        ("Blue", "#268BD2"),      # 165-255
+        ("Purple", "#A78BFA"),    # 255-320
     ]
+
+    THEME_CATEGORY_OVERRIDES = {
+        "hc_dark": "Grey",
+        "hc_light": "Grey",
+        "monokai_hc": "Grey",
+        "everforest_hc": "Grey",
+        "slate_gold_hc": "Blue",
+        "solarized_hc_light": "Yellow",
+    }
 
     @staticmethod
     def _hex_to_hsv(hex_color):
@@ -123,22 +133,18 @@ class MainWindow(QtWidgets.QWidget):
         if s < 0.15:
             return 0  # Neutral
         # Map hue to category
-        if h < 15 or h >= 345:
-            return 1  # Red
+        if h < 15 or h >= 320:
+            return 2  # Red
         elif h < 45:
-            return 2  # Orange
+            return 3  # Orange
         elif h < 70:
-            return 3  # Yellow
+            return 4  # Yellow
         elif h < 165:
-            return 4  # Green
-        elif h < 200:
-            return 5  # Cyan
-        elif h < 260:
+            return 5  # Green
+        elif h < 255:
             return 6  # Blue
-        elif h < 290:
+        elif h < 320:
             return 7  # Purple
-        else:
-            return 8  # Pink
 
     def _build_theme_menu(self) -> QtWidgets.QMenu:
         menu = QtWidgets.QMenu(self)
@@ -149,9 +155,16 @@ class MainWindow(QtWidgets.QWidget):
 
         # Build category buckets based on submit color
         category_themes = [[] for _ in self.RAINBOW_CATEGORIES]
+        category_name_to_index = {
+            name: idx for idx, (name, _) in enumerate(self.RAINBOW_CATEGORIES)
+        }
         for key in THEMES.keys():
-            submit_color = THEMES[key].get("submit", "#888888")
-            cat_idx = self._get_color_category(submit_color)
+            override_name = self.THEME_CATEGORY_OVERRIDES.get(key)
+            if override_name in category_name_to_index:
+                cat_idx = category_name_to_index[override_name]
+            else:
+                submit_color = THEMES[key].get("submit", "#888888")
+                cat_idx = self._get_color_category(submit_color)
             category_themes[cat_idx].append(key)
 
         for idx, (category_name, category_color) in enumerate(self.RAINBOW_CATEGORIES):
@@ -205,6 +218,64 @@ class MainWindow(QtWidgets.QWidget):
         self.installEventFilter(self)
         self._reposition_theme_button_window(dx=20, dy=20)
         self._theme_button.raise_()
+
+    def _install_theme_live_reload(self):
+        project_dir = os.path.dirname(__file__)
+        self._theme_watch_paths = [
+            os.path.join(project_dir, "themes_data.py"),
+            os.path.join(project_dir, "theming.py"),
+        ]
+
+        self._theme_watcher = QtCore.QFileSystemWatcher(self)
+        self._theme_reload_timer = QtCore.QTimer(self)
+        self._theme_reload_timer.setSingleShot(True)
+        self._theme_reload_timer.setInterval(250)
+        self._theme_reload_timer.timeout.connect(self._reload_theme_modules)
+
+        self._theme_watcher.fileChanged.connect(self._on_theme_file_changed)
+        self._refresh_theme_watch_paths()
+
+    def _refresh_theme_watch_paths(self):
+        watched = set(self._theme_watcher.files())
+        for path in self._theme_watch_paths:
+            if os.path.exists(path) and path not in watched:
+                self._theme_watcher.addPath(path)
+
+    def _on_theme_file_changed(self, _path):
+        # Some editors save via rename; re-register watched files before reloading.
+        self._refresh_theme_watch_paths()
+        self._theme_reload_timer.start()
+
+    def _reload_theme_modules(self):
+        global THEMES, apply_theme, make_paintbrush_icon, best_text_on
+
+        try:
+            import themes_data as themes_data_module
+            import theming as theming_module
+
+            importlib.reload(themes_data_module)
+            importlib.reload(theming_module)
+
+            THEMES = themes_data_module.THEMES
+            apply_theme = theming_module.apply_theme
+            make_paintbrush_icon = theming_module.make_paintbrush_icon
+            best_text_on = theming_module.best_text_on
+
+            theme_key = self.settings.value("theme", None, type=str)
+            if theme_key not in THEMES:
+                theme_key = next(iter(THEMES.keys()))
+                self.settings.setValue("theme", theme_key)
+
+            app = QtWidgets.QApplication.instance()
+            apply_theme(app, theme_key)
+            self._theme_button.setIcon(self._make_paintbrush_icon())
+            self._theme_button.setMenu(self._build_theme_menu())
+            self._set_default_status_for_current_tab()
+
+            self._refresh_theme_watch_paths()
+            self.set_status("Theme updated from source changes.")
+        except Exception as exc:
+            self.set_status(f"Theme reload failed: {exc}")
 
     def _on_theme_selected(self, theme_key: str):
         if theme_key not in THEMES:

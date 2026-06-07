@@ -48,7 +48,7 @@ A desktop application for combining and subtracting audio stems. Built with Pyth
 
 Download the latest release for your platform from the [Releases](../../releases) page.
 
-### Build from Source
+### Build from Source (Developers/Contributors)
 
 1. Clone the repository:
    ```bash
@@ -80,9 +80,22 @@ Download the latest release for your platform from the [Releases](../../releases
    python "Add or Subtract Stems.py"
    ```
 
-### Build Executable
+Live theme reload is built in:
+   - While the app is running, save changes to `themes_data.py` or `theming.py`
+   - The current theme is re-applied automatically without restarting the app
 
-To create a standalone executable:
+### Build Executable (Developers/Contributors)
+
+Github Actions are set up to build executables for Windows, Mac, and Linux when you use `git tag` with an incremented version #:
+
+```bash
+# Example: bump from v1.2.3 to v1.2.4
+git fetch --tags
+git tag v1.2.4
+git push origin v1.2.4
+```
+
+To create a standalone executable without Github Actions:
 
 ```bash
 pip install pyinstaller
@@ -98,7 +111,7 @@ The executable will be in the `dist` folder.
    - **Add Stems**: For combining audio files or adjusting volume
    - **Subtract Stems**: For removing stems from a song
 3. **Drag and drop** your audio files into the drop zones
-4. **Select options** (volume reduction, output format)
+4. **Select options**: volume reduction, output format
 5. **Click the action button** to process
 6. **Find your output** in the same folder as your input files
 
