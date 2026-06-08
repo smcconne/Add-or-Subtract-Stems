@@ -15,7 +15,7 @@ from main_window import MainWindow, get_resource_path
 
 ORG_NAME = "MinusStems"
 APP_NAME = "MinusStemsGUI"
-DEFAULT_THEME = "desert_hc"
+DEFAULT_THEME = "desert"
 
 
 def main():

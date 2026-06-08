@@ -87,8 +87,7 @@ class MainWindow(QtWidgets.QWidget):
         ("Neutral", "#888888"),  # Low saturation
         ("Grey", "#6B7280"),      # Manual bucket for selected neutral themes
         ("Red", "#E41A1C"),       # 0-15, 320-360
-        ("Orange", "#E0A458"),    # 15-45
-        ("Yellow", "#D7A900"),    # 45-70
+        ("Orange", "#E0A458"),    # 15-70
         ("Green", "#10B981"),     # 70-165
         ("Blue", "#268BD2"),      # 165-255
         ("Purple", "#A78BFA"),    # 255-320
@@ -97,10 +96,10 @@ class MainWindow(QtWidgets.QWidget):
     THEME_CATEGORY_OVERRIDES = {
         "hc_dark": "Grey",
         "hc_light": "Grey",
-        "monokai_hc": "Grey",
-        "everforest_hc": "Grey",
-        "slate_gold_hc": "Blue",
-        "solarized_hc_light": "Yellow",
+        "monokai": "Grey",
+        "everforest": "Grey",
+        "slate_gold": "Blue",
+        "solarized_light": "Orange",
     }
 
     @staticmethod
@@ -135,16 +134,14 @@ class MainWindow(QtWidgets.QWidget):
         # Map hue to category
         if h < 15 or h >= 320:
             return 2  # Red
-        elif h < 45:
-            return 3  # Orange
         elif h < 70:
-            return 4  # Yellow
+            return 3  # Orange
         elif h < 165:
-            return 5  # Green
+            return 4  # Green
         elif h < 255:
-            return 6  # Blue
+            return 5  # Blue
         elif h < 320:
-            return 7  # Purple
+            return 6  # Purple
 
     def _build_theme_menu(self) -> QtWidgets.QMenu:
         menu = QtWidgets.QMenu(self)

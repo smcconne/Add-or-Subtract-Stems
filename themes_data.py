@@ -28,7 +28,7 @@ THEMES = {
         "active_option": "#16A34A",
         "text": "#0B0B0B",
     },
-    "dracula_hc": {
+    "dracula": {
         "bg": "#282A36",
         "surface": "#343746",
         "active_tab": "#282A36",
@@ -39,7 +39,7 @@ THEMES = {
         "active_option": "#50FA7B",
         "text": "#F8F8F2",
     },
-    "gruvbox_hc": {
+    "gruvbox": {
         "bg": "#282828",
         "surface": "#3C3836",
         "active_tab": "#282828",
@@ -50,7 +50,7 @@ THEMES = {
         "active_option": "#8EC07C",
         "text": "#FBF1C7",
     },
-    "monokai_hc": {
+    "monokai": {
         "bg": "#222222",
         "surface": "#2B2B2B",
         "active_tab": "#222222",
@@ -61,7 +61,7 @@ THEMES = {
         "active_option": "#A6E22E",
         "text": "#F8F8F2",
     },
-    "cobalt_hc": {
+    "cobalt": {
         "bg": "#002240",
         "surface": "#0A315C",
         "active_tab": "#002240",
@@ -72,7 +72,7 @@ THEMES = {
         "active_option": "#34D399",
         "text": "#E6F1FF",
     },
-    "everforest_hc": {
+    "everforest": {
         "bg": "#2B3339",
         "surface": "#323C41",
         "active_tab": "#2B3339",
@@ -83,7 +83,7 @@ THEMES = {
         "active_option": "#7FBBB3",
         "text": "#D3C6AA",
     },
-    "solarized_hc_dark": {
+    "solarized_dark": {
         "bg": "#002B36",
         "surface": "#073642",
         "active_tab": "#002B36",
@@ -94,29 +94,29 @@ THEMES = {
         "active_option": "#B58900",
         "text": "#FDF6E3",
     },
-    "solarized_hc_light": {
+    "solarized_light": {
         "bg": "#FDF6E3",
         "surface": "#FFFDF9",
         "active_tab": "#FDF6E3",
         "inactive_tab_drop": "#E9E2D1",
         "border": "#657B83",
-        "submit": "#268BD2",
+        "submit": "#2AA198",
         "submit_hover": "#1E74B1",
-        "active_option": "#2AA198",
+        "active_option": "#CB4B16",
         "text": "#073642",
     },
-    "sunshine_hc": {
+    "sunshine": {
         "bg": "#77EFF7",
-        "surface": "#FFF25F",
-        "active_tab": "#ECB834",
-        "inactive_tab_drop": "#B68F34",
-        "border": "#C8AA2F",
-        "submit": "#FFE36B",
-        "submit_hover": "#FFD84D",
-        "active_option": "#FFD24A",
-        "text": "#2E2500",
+        "surface": "#F7E2A8",
+        "active_tab": "#F2D07A",
+        "inactive_tab_drop": "#DBB85F",
+        "border": "#8A6A1F",
+        "submit": "#A85100",
+        "submit_hover": "#8A4300",
+        "active_option": "#0F766E",
+        "text": "#2A2200",
     },
-    "slate_gold_hc": {
+    "slate_gold": {
         "bg": "#111827",
         "surface": "#1F2937",
         "active_tab": "#111827",
@@ -127,7 +127,7 @@ THEMES = {
         "active_option": "#10B981",
         "text": "#F9FAFB",
     },
-    "emerald_hc": {
+    "emerald": {
         "bg": "#0B1B16",
         "surface": "#112922",
         "active_tab": "#0B1B16",
@@ -138,7 +138,7 @@ THEMES = {
         "active_option": "#3B82F6",
         "text": "#E6FFFA",
     },
-    "violet_hc": {
+    "violet": {
         "bg": "#1A1027",
         "surface": "#24173A",
         "active_tab": "#1A1027",
@@ -149,7 +149,7 @@ THEMES = {
         "active_option": "#22D3EE",
         "text": "#EFE7FF",
     },
-    "desert_hc": {
+    "desert": {
         "bg": "#201A16",
         "surface": "#2A221C",
         "active_tab": "#201A16",
@@ -160,7 +160,7 @@ THEMES = {
         "active_option": "#E76F51",
         "text": "#F5F1EC",
     },
-    "crimson_hc": {
+    "crimson": {
         "bg": "#1A0E10",
         "surface": "#231316",
         "active_tab": "#1A0E10",
@@ -171,7 +171,7 @@ THEMES = {
         "active_option": "#FF7F00",
         "text": "#F8F0F0",
     },
-    "fuchsia_hc": {
+    "fuchsia": {
         "bg": "#180E17",
         "surface": "#221320",
         "active_tab": "#180E17",
@@ -182,7 +182,7 @@ THEMES = {
         "active_option": "#377EB8",
         "text": "#F7ECF5",
     },
-    "plum_hc": {
+    "plum": {
         "bg": "#150F1B",
         "surface": "#1F1529",
         "active_tab": "#150F1B",
