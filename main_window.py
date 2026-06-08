@@ -94,8 +94,8 @@ class MainWindow(QtWidgets.QWidget):
     ]
 
     THEME_CATEGORY_OVERRIDES = {
-        "hc_dark": "Grey",
         "hc_light": "Grey",
+        "hc_dark": "Grey",
         "monokai": "Grey",
         "everforest": "Grey",
         "slate_gold": "Blue",

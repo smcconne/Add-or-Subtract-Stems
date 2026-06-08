@@ -2,7 +2,7 @@
 
 A desktop application for combining and subtracting audio stems. Built with Python and PyQt5.
 
-![Screenshot](app_screenshot.png)
+![Screenshot](app_screenshots.png)
 
 [![Cross-platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)](https://github.com/smcconne/Add-or-Subtract-Stems/releases)
 
@@ -86,13 +86,14 @@ Live theme reload is built in:
 
 ### Build Executable (Developers/Contributors)
 
-Github Actions are set up to build executables for Windows, Mac, and Linux when you use `git tag` with an incremented version #:
+Github Actions are set up to automatically build executables for Windows, Mac, and Linux when a new tag is pushed:
 
 ```bash
 # Example: bump from v1.2.3 to v1.2.4
 git fetch --tags
-git tag v1.2.4
-git push origin v1.2.4
+git tag -n              # List current tags [e.g. v1.2.2, v1.2.3]
+git tag v1.2.4          # Increment the version number
+git push origin v1.2.4  # Triggers Windows, Mac and Linux builds
 ```
 
 To create a standalone executable without Github Actions:
